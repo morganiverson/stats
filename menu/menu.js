@@ -34,8 +34,15 @@ getTemplate = (dir,current) => `
 
         <span id="menu-holder" dir="${dir}">
         <ul>
-            <li id="home" ${current == "home" ? "current" : ""} class = "menu-item"><a href="./index.html">Home</a></li>
-            <li id = "03avg" ${current == "03avg" ? "current" : ""} class = "menu-item"><a href="./03average.html">0-3 Averages</a></li>
+            <li id="home" ${current == "home" ? "current" : ""} class = "menu-item">
+                <a href="./index.html">Home</a>
+            </li>
+            <li id = "03avg" ${current == "03avg" ? "current" : ""} class = "menu-item">
+                <a href="./03average.html">Average (0, 1, 2, 3)</a>
+            </li>
+            <li id = "efficiency" ${current == "efficiency" ? "current" : ""} class = "menu-item">
+                <a href="./efficiency.html">Efficiency (-1, 0, +1)</a>
+            </li>
         </ul>
         </span>
         `;
