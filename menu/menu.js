@@ -1,5 +1,34 @@
 const template = document.createElement("template");
 
+const menu_items = [
+    {
+        "id": "home",
+        "link": "./index.html",
+        "display_name": "Home"
+    },
+    {
+        "id": "03avg",
+        "link": "./03average.html",
+        "display_name": "Average (0, 1, 2, 3)"
+    },
+    {
+        "id": "eff",
+        "link": "./efficiency.html",
+        "display_name": "Efficiency (-1, 0, +1)"
+    },
+]
+
+getMenuListItems = (items, current) => {
+    let menuHtml = "";
+        menu_items.forEach(item => {
+            menuHtml = menuHtml + 
+                        `<li id = "${item.id}" ${current == item.id ? "current" : ""} class = "menu-item">
+                    <a href="${item.link}">${item.display_name}</a>
+                </li>
+                `;
+    });
+    return menuHtml;
+}
 getTemplate = (dir,current) => `
         <style>
             ul {
@@ -29,20 +58,16 @@ getTemplate = (dir,current) => `
         
             #menu-holder[dir="horizontal"] ul li {
                 float: left;
-                }
+            }
+            #menu-holder {
+                padding: 0px;
+                margin: 0px;
+            }
         </style>
 
         <span id="menu-holder" dir="${dir}">
         <ul>
-            <li id="home" ${current == "home" ? "current" : ""} class = "menu-item">
-                <a href="./index.html">Home</a>
-            </li>
-            <li id = "03avg" ${current == "03avg" ? "current" : ""} class = "menu-item">
-                <a href="./03average.html">Average (0, 1, 2, 3)</a>
-            </li>
-            <li id = "efficiency" ${current == "efficiency" ? "current" : ""} class = "menu-item">
-                <a href="./efficiency.html">Efficiency (-1, 0, +1)</a>
-            </li>
+            ${getMenuListItems(menu_items, current)}
         </ul>
         </span>
         `;
