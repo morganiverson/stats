@@ -12,7 +12,7 @@ const menu_items = [
         "display_name": "Average (0, 1, 2, 3)"
     },
     {
-        "id": "eff",
+        "id": "efficiency",
         "link": "./efficiency.html",
         "display_name": "Efficiency (-1, 0, +1)"
     },
