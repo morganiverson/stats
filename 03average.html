@@ -1,191 +1,192 @@
 <html>
-<style>
-    .btn-atmp4 {
-        font-size: 2rem;
-        font-weight: bold;
-        font-family: sans-serif;
-        border: 0px;
-    }
-
-    button.btn-atmp4:nth-child(3n+1) {
-        background-color: lightgrey;
-    }
-
-    button:nth-child(n):active  {
-        background-color: grey;
-
-    }
-
-    #error-msg {
-        color: red;
-        margin-bottom: 15px;
-    }
-    
-    #btn-organizer {
-        /* border: 1px solid black; */
-        display: grid;
-        grid-template-columns: auto auto;
-        justify-self: center;
-        width: 100%;
-        height: 100%;
-    }
-
-    #btn-cont {
-        width: 100%;
-        height: 80%;
-    }
-
-    #root-cont {
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-
-        /* border: 1px solid black; */
-        flex-direction: column;
-        justify-content: space-around;
-    }
-
-    #data-cont {
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .data-holder, .data-value {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-
-    .data-label {
-        text-decoration: underline;
-    }
-
-    #desc {
-        margin: 10px;
-        width: 95vw;
-        text-align: center;
-        display: none;;
-    }
-
-    #desc input {
-        text-align: center;
-        font-style: italic;
-        font-family: sans-serif;
-        margin-bottom: 10px;
-    }
-
-    #view-cont {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 95vh;
-        width: 100vw;
-    }
-
-    #options {
-        display: flex;
-        width: 30%;
-        justify-content: space-around;
-    }
-
-    #reset-btn:active {
-        color: lightgray;
-    }
-</style>
-
-<script>
-
-    const data_holder_error = "Cannot identify avg_value_holder and/or attempt_value_holder and/or err_msg_holder";
-
-    const btn_list_error = "Cannot identify btn_list";
-    const reset_btn_error = "Cannot identify reset_btn";
-    const desc_btn_box_error = "Cannot identify desc_box and/or show_desc";
-
-
-    window.onload = () => {
-        console.log("window loaded")
-        const err_msg_holder = document.getElementById("error-msg");
-        const avg_value_holder = document.getElementById("avg-value");
-        const attempt_value_holder = document.getElementById("attempt-value");
-
-        if (err_msg_holder == undefined || avg_value_holder == undefined || attempt_value_holder == undefined) {
-            err_msg_holder.innerHTML = data_holder_error;
-            console.error(data_holder_error);
-        }
-        var avg_value = 0;
-        var att_value = 0;
-        var total_rating = 0;
-
-        const btn_list = document.getElementsByClassName("btn-atmp4");
-
-        if (btn_list == undefined || btn_list.length == 0) {
-            err_msg_holder.innerHTML = btn_list_error;
-            console.error(btn_list_error);
-        }
-
-        Array.from(btn_list).forEach(element => {
-            element.addEventListener("click", () => {
-
-                var value = parseInt(element.getAttribute("value"));
-                console.log("+1 attempt\n+" + value + "rating");
-
-                console.log("attempts = " + att_value + "total=" + total_rating + "avg=");
-
-                att_value = att_value + 1;
-                total_rating= total_rating + value;
-                avg_value = total_rating / att_value;
-
-                console.log("avg=" + avg_value + "\nattempts=" + att_value);
-                attempt_value_holder.innerHTML = att_value;
-                avg_value_holder.innerHTML = avg_value.toFixed(2);
-            });
-        });
-        
-        const reset_btn = document.getElementById("reset-btn");
-
-        if(reset_btn == undefined) {
-            err_msg_holder.innerHTML = reset_btn_error;
-            console.error(reset_btn_error)
-        }
-        reset_btn.addEventListener("click", () => {
-            att_value = 0;
-            avg_value = 0;
-            total_rating = 0;
-            console.log("Resetting attempts, average and descriptor");
-            attempt_value_holder.innerHTML = att_value;
-            avg_value_holder.innerHTML = avg_value.toFixed(2);
-
-        });
-
-        const show_desc_box = document.getElementById("show-desc");
-        const desc_box = document.getElementById("desc");
-
-        if (desc_box == undefined || show_desc_box == undefined) {
-                err_msg_holder.innerHTML = desc_btn_box_error;
-                console.error(desc_btn_box_error);
-        }
-
-        show_desc_box.addEventListener("click", (e) => {
-            if(show_desc_box.innerHTML == "person") {
-                desc_box.style.display = "block";
-                show_desc_box.innerHTML = "person_cancel";
-            } else {
-                desc_box.style.display = "none";
-                show_desc_box.innerHTML = "person";
+    <head>
+        <style>
+            .btn-atmp4 {
+                font-size: 2rem;
+                font-weight: bold;
+                font-family: sans-serif;
+                border: 0px;
             }
-        })
 
-    }
+            button.btn-atmp4:nth-child(3n+1) {
+                background-color: lightgrey;
+            }
+
+            button:nth-child(n):active  {
+                background-color: grey;
+
+            }
+
+            #error-msg {
+                color: red;
+                margin-bottom: 15px;
+            }
+            
+            #btn-organizer {
+                /* border: 1px solid black; */
+                display: grid;
+                grid-template-columns: auto auto;
+                justify-self: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            #btn-cont {
+                width: 100%;
+                height: 80%;
+            }
+
+            #root-cont {
+                display: flex;
+                width: 100vw;
+                height: 100vh;
+
+                /* border: 1px solid black; */
+                flex-direction: column;
+                justify-content: space-around;
+            }
+
+            #data-cont {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .data-holder, .data-value {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+
+            .data-label {
+                text-decoration: underline;
+            }
+
+            #desc {
+                margin: 10px;
+                width: 95vw;
+                text-align: center;
+                display: none;;
+            }
+
+            #desc input {
+                text-align: center;
+                font-style: italic;
+                font-family: sans-serif;
+                margin-bottom: 10px;
+            }
+
+            #view-cont {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 95vh;
+                width: 100vw;
+            }
+
+            #options {
+                display: flex;
+                width: 30%;
+                justify-content: space-around;
+            }
+
+            #reset-btn:active {
+                color: lightgray;
+            }
+        </style>
+        <script src="menu/menu.js" defer></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,person,person_cancel"/>
+
+        <script>
+
+            const data_holder_error = "Cannot identify avg_value_holder and/or attempt_value_holder and/or err_msg_holder";
+
+            const btn_list_error = "Cannot identify btn_list";
+            const reset_btn_error = "Cannot identify reset_btn";
+            const desc_btn_box_error = "Cannot identify desc_box and/or show_desc";
 
 
-</script>
-<script src="./menu/menu.js" defer></script>
+            window.onload = () => {
+                console.log("window loaded")
+                const err_msg_holder = document.getElementById("error-msg");
+                const avg_value_holder = document.getElementById("avg-value");
+                const attempt_value_holder = document.getElementById("attempt-value");
+
+                if (err_msg_holder == undefined || avg_value_holder == undefined || attempt_value_holder == undefined) {
+                    err_msg_holder.innerHTML = data_holder_error;
+                    console.error(data_holder_error);
+                }
+                var avg_value = 0;
+                var att_value = 0;
+                var total_rating = 0;
+
+                const btn_list = document.getElementsByClassName("btn-atmp4");
+
+                if (btn_list == undefined || btn_list.length == 0) {
+                    err_msg_holder.innerHTML = btn_list_error;
+                    console.error(btn_list_error);
+                }
+
+                Array.from(btn_list).forEach(element => {
+                    element.addEventListener("click", () => {
+
+                        var value = parseInt(element.getAttribute("value"));
+                        console.log("+1 attempt\n+" + value + "rating");
+
+                        console.log("attempts = " + att_value + "total=" + total_rating + "avg=");
+
+                        att_value = att_value + 1;
+                        total_rating= total_rating + value;
+                        avg_value = total_rating / att_value;
+
+                        console.log("avg=" + avg_value + "\nattempts=" + att_value);
+                        attempt_value_holder.innerHTML = att_value;
+                        avg_value_holder.innerHTML = avg_value.toFixed(2);
+                    });
+                });
+                
+                const reset_btn = document.getElementById("reset-btn");
+
+                if(reset_btn == undefined) {
+                    err_msg_holder.innerHTML = reset_btn_error;
+                    console.error(reset_btn_error)
+                }
+                reset_btn.addEventListener("click", () => {
+                    att_value = 0;
+                    avg_value = 0;
+                    total_rating = 0;
+                    console.log("Resetting attempts, average and descriptor");
+                    attempt_value_holder.innerHTML = att_value;
+                    avg_value_holder.innerHTML = avg_value.toFixed(2);
+
+                });
+
+                const show_desc_box = document.getElementById("show-desc");
+                const desc_box = document.getElementById("desc");
+
+                if (desc_box == undefined || show_desc_box == undefined) {
+                        err_msg_holder.innerHTML = desc_btn_box_error;
+                        console.error(desc_btn_box_error);
+                }
+
+                show_desc_box.addEventListener("click", (e) => {
+                    if(show_desc_box.innerHTML == "person") {
+                        desc_box.style.display = "block";
+                        show_desc_box.innerHTML = "person_cancel";
+                    } else {
+                        desc_box.style.display = "none";
+                        show_desc_box.innerHTML = "person";
+                    }
+                })
+
+            }
 
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,person,person_cancel"/>
+        </script>
+</head>
+
 <body>
     <div id="view-cont">
         <stats-menu dir="horizontal" current = "03avg"></stats-menu>
