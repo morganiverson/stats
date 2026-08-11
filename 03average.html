@@ -142,7 +142,7 @@
                 }
 
                 Array.from(btn_list).forEach(element => {
-                    element.addEventListener("click", () => {
+                    element.addEventListener("pointerdown", () => {
 
                         var value = parseInt(element.getAttribute("value"));
                         console.log("+1 attempt\n+" + value + "rating");
@@ -165,7 +165,7 @@
                     err_msg_holder.innerHTML = reset_btn_error;
                     console.error(reset_btn_error)
                 }
-                reset_btn.addEventListener("click", () => {
+                reset_btn.addEventListener("pointerdown", () => {
                     att_value = 0;
                     avg_value = 0;
                     total_rating = 0;
@@ -183,7 +183,7 @@
                         console.error(desc_btn_box_error);
                 }
 
-                show_desc_box.addEventListener("click", (e) => {
+                show_desc_box.addEventListener("pointerdown", (e) => {
                     if(show_desc_box.innerHTML == "person") {
                         desc_box.style.display = "block";
                         show_desc_box.innerHTML = "person_cancel";
