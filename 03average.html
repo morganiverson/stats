@@ -108,70 +108,55 @@
             }
         </style>
         <script src="component/menu.js" defer></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,person,person_cancel"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,person,person_cancel,undo"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
-
             const data_holder_error = "Cannot identify avg_value_holder and/or attempt_value_holder and/or err_msg_holder";
 
             const btn_list_error = "Cannot identify btn_list";
             const reset_btn_error = "Cannot identify reset_btn";
             const desc_btn_box_error = "Cannot identify desc_box and/or show_desc";
-
+            const undo_btn_error = "Cannot identify undo_btn";
 
             window.onload = () => {
-                console.log("window loaded")
                 const err_msg_holder = document.getElementById("error-msg");
                 const avg_value_holder = document.getElementById("avg-value");
                 const attempt_value_holder = document.getElementById("attempt-value");
 
                 if (err_msg_holder == undefined || avg_value_holder == undefined || attempt_value_holder == undefined) {
-                    err_msg_holder.innerHTML = data_holder_error;
-                    console.error(data_holder_error);
+                    display_error(err_msg_holder, data_holder_error);
                 }
+
                 var avg_value = 0;
                 var att_value = 0;
-                var total_rating = 0;
+                var history = [];
 
                 const btn_list = document.getElementsByClassName("btn-atmp4");
 
                 if (btn_list == undefined || btn_list.length == 0) {
-                    err_msg_holder.innerHTML = btn_list_error;
-                    console.error(btn_list_error);
+                    display_error(err_msg_holder, btn_list_error);
                 }
 
                 Array.from(btn_list).forEach(element => {
                     element.addEventListener("pointerdown", () => {
-
                         var value = parseInt(element.getAttribute("value"));
-                        console.log("+1 attempt\n+" + value + "rating");
+                        console.log("+1 attempt\n+" + value + " rating");
 
-                        console.log("attempts = " + att_value + "total=" + total_rating + "avg=");
-
-                        att_value = att_value + 1;
-                        total_rating= total_rating + value;
-                        avg_value = total_rating / att_value;
-
-                        console.log("avg=" + avg_value + "\nattempts=" + att_value);
-                        attempt_value_holder.innerHTML = att_value;
-                        avg_value_holder.innerHTML = avg_value.toFixed(2);
+                        history.push(value);
+                        update_display_values(history, attempt_value_holder, avg_value_holder);
                     });
                 });
                 
                 const reset_btn = document.getElementById("reset-btn");
 
                 if(reset_btn == undefined) {
-                    err_msg_holder.innerHTML = reset_btn_error;
-                    console.error(reset_btn_error)
+                    display_error(err_msg_holder, reset_btn_error);
                 }
+
                 reset_btn.addEventListener("pointerdown", () => {
-                    att_value = 0;
-                    avg_value = 0;
-                    total_rating = 0;
-                    console.log("Resetting attempts, average and descriptor");
-                    attempt_value_holder.innerHTML = att_value;
-                    avg_value_holder.innerHTML = avg_value.toFixed(2);
+                    history = [];
+                    update_display_values(history, attempt_value_holder, avg_value_holder)
 
                 });
 
@@ -179,8 +164,7 @@
                 const desc_box = document.getElementById("desc");
 
                 if (desc_box == undefined || show_desc_box == undefined) {
-                        err_msg_holder.innerHTML = desc_btn_box_error;
-                        console.error(desc_btn_box_error);
+                    display_error(err_msg_holder, desc_btn_box_error);
                 }
 
                 show_desc_box.addEventListener("pointerdown", (e) => {
@@ -193,9 +177,48 @@
                     }
                 })
 
+                const undo_btn = document.getElementById("undo-btn");
+
+                if (undo_btn == undefined) {
+                    display_error(err_msg_holder, "Cannot identify undo-btn");
+                }
+
+                undo_btn.addEventListener("pointerdown", (e) => {
+                    if (history.length > 0) {
+                        var last_attempt = history.pop();
+                        console.log("Undoing last attempt: [" + last_attempt + "]\nAttempts: [" + history + "]");
+                        update_display_values(history, attempt_value_holder, avg_value_holder);
+                    }
+                });
             }
 
+            const display_error = (errorDisplay, errorMsg) => {
+                errorDisplay.innerHTML = errorMsg;
+                console.error(errorMsg);
+            }
 
+            const update_display_values = (history, attemptDisplay, averageDisplay) => {
+                var att_value = history.length;
+                var avg_value = calculate_avg(history);
+                console.log("avg=" + avg_value + "\nattempts=" + att_value + "\nall_attempts=[" + history + "]");
+                attemptDisplay.innerHTML = att_value;
+                averageDisplay.innerHTML = avg_value;
+            }
+            
+            const calculate_avg = (arr) => {
+                var avg = 0;
+                if (arr.length == 0) {
+                    avg = 0;
+                } else if (arr.length == 1) {
+                    avg =  arr[0];
+                } else {
+                    var array = Array.from(arr);
+                    var size = array.length;
+                    var sum = array.reduce((a, b, i) => a + b, 0);
+                    avg = sum / size;
+                }
+                return avg.toFixed(2);
+            }
         </script>
 </head>
 
@@ -212,6 +235,8 @@
         <div> 
             <span id="reset-btn"class="material-symbols-outlined">delete</span></div>
         <div><span id ="show-desc"class="material-symbols-outlined">person</span></div>
+
+        <div><span id ="undo-btn"class="material-symbols-outlined">undo</span></div>
     </div>
     <div id = "desc"><hr><input id = "desc-input" type = "text" placeholder="Descriptor"/></div>
     <div id = "error-msg"></div>
