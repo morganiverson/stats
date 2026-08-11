@@ -108,8 +108,9 @@
             }
         </style>
         <script src="component/menu.js" defer></script>
+        
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,person,person_cancel,undo"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
             const data_holder_error = "Cannot identify avg_value_holder and/or attempt_value_holder and/or err_msg_holder";
@@ -121,22 +122,18 @@
 
             window.onload = () => {
                 const err_msg_holder = document.getElementById("error-msg");
+                checkIfDefined(err_msg_holder, "err_msg_holder", err_msg_holder);
+
                 const avg_value_holder = document.getElementById("avg-value");
-                const attempt_value_holder = document.getElementById("attempt-value");
+                checkIfDefined(err_msg_holder, "avg_value_holder", avg_value_holder);
+                
+                const attempt_value_holder = document.getElementById("attempt-value");                
+                checkIfDefined(attempt_value_holder, "attempt_value_holder", err_msg_holder);
 
-                if (err_msg_holder == undefined || avg_value_holder == undefined || attempt_value_holder == undefined) {
-                    display_error(err_msg_holder, data_holder_error);
-                }
-
-                var avg_value = 0;
-                var att_value = 0;
                 var history = [];
 
                 const btn_list = document.getElementsByClassName("btn-atmp4");
-
-                if (btn_list == undefined || btn_list.length == 0) {
-                    display_error(err_msg_holder, btn_list_error);
-                }
+                checkIfDefined(btn_list, "btn_list", err_msg_holder);
 
                 Array.from(btn_list).forEach(element => {
                     element.addEventListener("pointerdown", () => {
@@ -144,28 +141,29 @@
                         console.log("+1 attempt\n+" + value + " rating");
 
                         history.push(value);
-                        update_display_values(history, attempt_value_holder, avg_value_holder);
+                        update_display_values(history,
+                            attempt_value_holder,
+                            avg_value_holder);
                     });
                 });
                 
                 const reset_btn = document.getElementById("reset-btn");
-
-                if(reset_btn == undefined) {
-                    display_error(err_msg_holder, reset_btn_error);
-                }
+                checkIfDefined(reset_btn, "reset_btn", err_msg_holder);
 
                 reset_btn.addEventListener("pointerdown", () => {
-                    history = [];
-                    update_display_values(history, attempt_value_holder, avg_value_holder)
-
+                    if (history.length > 0) {
+                        history = [];
+                        update_display_values(history,
+                            attempt_value_holder,
+                            avg_value_holder);
+                    }
                 });
 
                 const show_desc_box = document.getElementById("show-desc");
                 const desc_box = document.getElementById("desc");
 
-                if (desc_box == undefined || show_desc_box == undefined) {
-                    display_error(err_msg_holder, desc_btn_box_error);
-                }
+                checkIfDefined(desc_box, "desc_box", err_msg_holder);
+                checkIfDefined(show_desc_box, "show_desc_box", err_msg_holder);
 
                 show_desc_box.addEventListener("pointerdown", (e) => {
                     if(show_desc_box.innerHTML == "person") {
@@ -178,10 +176,7 @@
                 })
 
                 const undo_btn = document.getElementById("undo-btn");
-
-                if (undo_btn == undefined) {
-                    display_error(err_msg_holder, "Cannot identify undo-btn");
-                }
+                checkIfDefined(undo_btn, "undo_btn", err_msg_holder);
 
                 undo_btn.addEventListener("pointerdown", (e) => {
                     if (history.length > 0) {
@@ -218,6 +213,15 @@
                     avg = sum / size;
                 }
                 return avg.toFixed(2);
+            }
+
+            const checkIfDefined = (val, name, errorDiv) => {
+                if (val == undefined) {
+                    console.error("Cannot identify " + name);
+                    if (errorDiv != undefined) {
+                        errorDiv.innerHTML = "Cannot identify " + name;
+                    }
+                }
             }
         </script>
 </head>
