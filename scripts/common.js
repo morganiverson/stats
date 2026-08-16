@@ -1,6 +1,3 @@
-const Utils = {
-    "checkIfDefined": checkIfDefined
-}
 
 const checkIfDefined = (val, name, errorDiv) => {
     if (val == undefined) {
@@ -9,4 +6,6 @@ const checkIfDefined = (val, name, errorDiv) => {
     }
 }
 
-export default Utils;
+export default {
+    "checkIfDefined": checkIfDefined
+};

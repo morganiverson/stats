@@ -5,6 +5,8 @@ const btn_ref = "btn-atmp3";
 const btn_click_event = "pointerdown";
 
 window.onload = () => {
+    console.log("Features => ", FeatureList);
+
     const err_msg_holder = document.getElementById("error-msg");
     const eff_value_holder = document.getElementById("eff-value");
     const attempt_value_holder = document.getElementById("att-value")

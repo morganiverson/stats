@@ -79,6 +79,7 @@ class Menu extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.dir = this.getAttribute("dir");
+        console.log(this);
     }
 
 
@@ -104,7 +105,6 @@ class Menu extends HTMLElement {
 
     attributeChangedCallback() {
         this.shadowRoot.innerHTML = getTemplate(this.dir, this.current);
-
     }
 }
 
